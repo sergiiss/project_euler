@@ -1,29 +1,33 @@
-class MaxFactor
-  attr_reader :input, :collection_factors, :max_factor
+class MaxFactorCalculator
+  attr_reader :number
+  attr_reader :max_factor
 
-  def initialize(input)
-    @input = input
+  def initialize(number)
+    @number = number
+
     @collection_factors = []
   end
 
-  def result
-    get_collections_factors(input)
-    max_factor
+  def calculate
+    get_collections_factors
+    get_max_factor
   end
 
   private
 
-  def get_collections_factors(input_number)
+  attr_reader :collection_factors
+
+  def get_collections_factors
     index = 2
 
     while true
       if prime_number?(index)
 
-        if input_number%index == 0
-          input_number = input_number/index
+        if number%index == 0
+          @number = number/index
           collection_factors << index
 
-          break if input_number == 1
+          break if number == 1
 
           index = 1
         end
@@ -31,7 +35,9 @@ class MaxFactor
 
       index += 1
     end
+  end
 
+  def get_max_factor
     @max_factor = collection_factors.max
   end
 
@@ -40,5 +46,6 @@ class MaxFactor
   end
 end
 
-max = MaxFactor.new(13195)
-puts max.result
+max_factor_calculator = MaxFactorCalculator.new(13195)
+max_factor_calculator.calculate
+puts max_factor_calculator.max_factor
